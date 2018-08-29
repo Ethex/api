@@ -1,0 +1,59 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Ethex API Documentation</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 800px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+</head>	
+<header><title>Ethex API Documentation</title></header>
+
+<body>
+    <h1>Smart Contract</h1>
+    <div>Ethex stores all of it's market data (orders and trades) in the Ethereum blockchain. Our smart contract is a low level API that allows you to do any important
+    market related function. </div>
+    <h3><a href="https://github.com/Ethex/contracts/">Contract source at github</a></h3>
+    
+    
+    <h1>Market API</h1>
+    <div>The API here is provided for convenience. This functionality is provided by reading data off the Ethereum blockchain. You can 
+         run this on your own machine against your own Ethereum node or against a public provider like Etherscan.</div>
+    <h3><a href="https://github.com/Ethex/api/">API source at github</a></h3>
+<pre><code>$ git clone https://github.com/Ethex/api
+$ cd api
+$ npm install
+$ node server.js
+</code></pre>
+    <h1>Market Data</h1>
+    Once the server is running you can query it for market data. Its provided in JSON format.
+    <h3><a href="https://api.ethex.market:5055/ticker">/ticker</a></h3>
+    returns a dictionary of ETH_Symbol to market data.
+    <ul>
+        <li>last: the price of the last trade.</li>
+        <li>lowestAsk: the lowest price offered to buy a token for.</li>
+        <li>highestBid: the highest price offered to sell a token for.</li>
+        <li>high24hr: The highest price paid in the last 24 hours in Ether.</li>
+        <li>low24hr: The lowest price paid in the last 24 hours in Ether.</li>
+    </ul>
+<h3>return example</h3>
+<div>{"ETH_STORM":{"last":null,"lowestAsk":0.00003056,"highestBid":0.00003267,"volume":0,"high24hr":null,"low24hr":null},"ETH_DENT":{"last":0.000010112,"lowestAsk":0.000010112,"highestBid":0.0000097,"volume":2.4055739359999997,"high24hr":0.000010112,"low24hr":null},"ETH_ZRX":{"last":null,"lowestAsk":0.002768877,"highestBid":0.0022034,"volume":0,"high24hr":null,"low24hr":null},"ETH_DAI":{"last":0.003394083,"lowestAsk":0.003394083,"highestBid":0.003455,"volume":1.99341282756,"high24hr":0.003394083,"low24hr":null},"ETH_BAT":{"last":0.0007875,"lowestAsk":0.000796944,"highestBid":0.0007875,"volume":0.07875,"high24hr":0.0007875,"low24hr":null},"ETH_REP":{"last":null,"lowestAsk":0.07063423,"highestBid":null,"volume":0,"high24hr":null,"low24hr":null},"ETH_PRL":{"last":null,"lowestAsk":0.000284663,"highestBid":0.00027,"volume":0,"high24hr":null,"low24hr":null},"ETH_KNC":{"last":null,"lowestAsk":null,"highestBid":0.00185,"volume":0,"high24hr":null,"low24hr":null},"ETH_REQ":{"last":null,"lowestAsk":null,"highestBid":0.00015,"volume":0,"high24hr":null,"low24hr":null}}</div>
+</body>
+</html>
+

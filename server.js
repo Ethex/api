@@ -3,7 +3,9 @@ var http = require('http');
 var tokens = require("./tokens.json");
 var config = require("./config.json");
 var ethexABI = require("./ethexABI");
-var abiDecode = require("./abi-decoder");
+var abiDecode = require("abi-decoder");
+const fs = require('fs');
+var docs = fs.readFileSync("./docs.html");
 var tokenMap = {};
 for (var token of tokens) {
     tokenMap[token.address.toLowerCase()] = token;
@@ -134,7 +136,12 @@ var server = http.createServer(function (req, res) {
     // You can define here your custom logic to handle the request
     // and then proxy the request.
     //application/json-rpc
-    if (req.method == 'GET') {
+    if (req.method == "GET" && req.url == "/") {
+        res.write(docs);
+        res.end();
+        return;
+    }
+    if (req.method == 'GET' && req.url == "/ticker") {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type'); // If needed
@@ -157,7 +164,7 @@ var server = http.createServer(function (req, res) {
 
 getMarketData((marketData)=>{
     MarketData = marketData;
-    server.listen(5055);
+    server.listen(config.server_port);
 });
 setInterval(refresh24Hour,30*1000);
 

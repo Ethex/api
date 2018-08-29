@@ -1,4 +1,5 @@
 {
     "node_host":"provider.ethex.market",
-    "node_port":"443"
+    "node_port":"443",
+    "server_port":5055
 }
