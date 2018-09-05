@@ -43,8 +43,8 @@ $ node server.js
 </code></pre>
     <h1>Market Data</h1>
     Once the server is running you can query it for market data. Its provided in JSON format.
-    <h3><a href="https://api.ethex.market:5055/ticker">/ticker</a></h3>
-    returns a dictionary of ETH_Symbol to market data.
+    <h3><a href="/ticker24">/ticker24</a></h3>
+    returns a dictionary of ETH_Symbol to 24 hours of market data.
     <ul>
         <li>last: the price of the last trade.</li>
         <li>lowestAsk: the lowest price offered to buy a token for.</li>
@@ -52,8 +52,64 @@ $ node server.js
         <li>high24hr: The highest price paid in the last 24 hours in Ether.</li>
         <li>low24hr: The lowest price paid in the last 24 hours in Ether.</li>
     </ul>
-<h3>return example</h3>
-<div>{"ETH_STORM":{"last":null,"lowestAsk":0.00003056,"highestBid":0.00003267,"volume":0,"high24hr":null,"low24hr":null},"ETH_DENT":{"last":0.000010112,"lowestAsk":0.000010112,"highestBid":0.0000097,"volume":2.4055739359999997,"high24hr":0.000010112,"low24hr":null},"ETH_ZRX":{"last":null,"lowestAsk":0.002768877,"highestBid":0.0022034,"volume":0,"high24hr":null,"low24hr":null},"ETH_DAI":{"last":0.003394083,"lowestAsk":0.003394083,"highestBid":0.003455,"volume":1.99341282756,"high24hr":0.003394083,"low24hr":null},"ETH_BAT":{"last":0.0007875,"lowestAsk":0.000796944,"highestBid":0.0007875,"volume":0.07875,"high24hr":0.0007875,"low24hr":null},"ETH_REP":{"last":null,"lowestAsk":0.07063423,"highestBid":null,"volume":0,"high24hr":null,"low24hr":null},"ETH_PRL":{"last":null,"lowestAsk":0.000284663,"highestBid":0.00027,"volume":0,"high24hr":null,"low24hr":null},"ETH_KNC":{"last":null,"lowestAsk":null,"highestBid":0.00185,"volume":0,"high24hr":null,"low24hr":null},"ETH_REQ":{"last":null,"lowestAsk":null,"highestBid":0.00015,"volume":0,"high24hr":null,"low24hr":null}}</div>
+    <h3>return example</h3>
+    <div><pre>
+            "ETH_BAT": {
+              "last": "0.0007991",
+              "lowestAsk": "0.00080273",
+              "highestBid": "0.00077",
+              "volume": "6.5354454128",
+              "high24hr": "0.000819127",
+              "low24hr": "0.000793324"
+            },
+            "ETH_DAI": {
+              "last": "0.00392237",
+              "lowestAsk": "0.004081296",
+              "highestBid": "0.003455",
+              "volume": "6.4170976176",
+              "high24hr": "0.00392237",
+              "low24hr": "0.00351"
+            },
+...
+          }</pre></div>
+
+    <h3><a href="/openOrders">/openOrders</a></h3>
+    returns all the market orders
+    <ul>
+        <li>hash: An order ID that can be used to cancel.</li>
+        <li>type: Buy/Sell</li>
+        <li>tokenAmount: The size of the order in tokens.</li>
+        <li>ethAmount: The total amount of ETH.</li>
+        <li>priceEth: The price in ETH for a token.</li>
+        <li>symbol: The symbol of the token.</li>
+        <li>tokenAddress: The Ethereum address of the token.</li>
+    </ul>
+    <h3>return example</h3>
+    <div><pre>{
+            "0xfedc7cbc3c9ee161678f48e12cb617054486849b03215213f016e53d0dc772a7": {
+              "type": "Buy",
+              "priceEth": "0.000419",
+              "tokenAmount": "50",
+              "ethAmount": "0.02095",
+              "tokenAddress": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+              "symbol": "BAT",
+              "pair": "ETH_BAT",
+              "hash": "0xfedc7cbc3c9ee161678f48e12cb617054486849b03215213f016e53d0dc772a7"
+            },
+            "0xd9e2f727fa971dab1254395976f7b77be3e056587db7b8f00fdb1f9e57d918d4": {
+              "type": "Buy",
+              "priceEth": "0.001",
+              "tokenAmount": "100",
+              "ethAmount": "0.1",
+              "tokenAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+              "symbol": "ZRX",
+              "pair": "ETH_ZRX",
+              "hash": "0xd9e2f727fa971dab1254395976f7b77be3e056587db7b8f00fdb1f9e57d918d4"
+            },
+            ...
+        </pre>        
+    </div>
+
 </body>
 </html>
 
