@@ -49,7 +49,7 @@ var getMarketData = (marketDataCallback) => {
     var rangeBlock = lastBlock - blocksPer24Hours;
     var startBlock = "0x" + startBlock.toString(16);
     var lastBlock = "0x" + lastBlock.toString(16);
-    rpcCall("eth_getLogs", [{ "fromBlock": startBlock, "toBlock": lastBlock, "address": "0xb746aed479f18287dc8fc202fe06f25f1a0a60ae" }], (results) => {
+    rpcCall("eth_getLogs", [{ "fromBlock": startBlock, "toBlock": lastBlock, "address": config.contract_address }], (results) => {
       var logs = abiDecode.decodeLogs(results['result']);
       var openOrders = {};
       for (var log_idx in logs) {

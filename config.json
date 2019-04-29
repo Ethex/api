@@ -2,5 +2,6 @@
     "node_host":"provider.ethex.market",
     "node_port":"443",
     "min_order_ether":0.001,
-    "server_port":5055
+    "server_port":5055,
+    "contract_address": "0xb746aed479f18287dc8fc202fe06f25f1a0a60ae"
 }
