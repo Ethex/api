@@ -335,4 +335,4 @@ getMarketData((marketData, _openBuys, _openSells) => {
   server.listen(config.server_port);
   console.log("listening on", config.server_port);
 });
-setInterval(refresh24Hour, 1000);
+setInterval(refresh24Hour, 15 * 1000);
