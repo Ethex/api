@@ -17,10 +17,10 @@ abiDecode.addABI(ethexABI);
 
 var minWei;
 let args = process.argv;
-if (args[2] === '0'){
+if (args[2] === '0') {
   minWei = new BigNumber(0);
 }
-else{
+else {
   minWei = new BigNumber(0.001).times(Math.pow(10, 18));
 }
 
@@ -193,12 +193,6 @@ var getMarketData = (marketDataCallback) => {
         ethOpenBuys = {};
         formatOrder(_openBuys);
         formatOrder(_openSells);
-        // console.log('formatted orders');
-        // for(key in ethOpenBuys){
-        //   if(ethOpenBuys[key].maker.toLowerCase() === '0x86975527AeD0ADfe33cd903F398604E875aef794'.toLowerCase()){
-        //     console.log('open buy: ', ethOpenBuys[key]);
-        //   }
-        // }
         marketDataCallback(marketData, ethOpenBuys, ethOpenSells);
       });
     }
