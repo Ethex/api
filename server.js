@@ -120,11 +120,24 @@ var getMarketData = (marketDataCallback) => {
             if (token)
               price = weiPerTok.dividedBy(Math.pow(10, 18 - token.decimals));//ETH per full token
             if (log.name === "MakeSellOrder") { //ask
-              var order = { type: log.name, tokenAddress, price, weiPerTok, weiAmount, tokAmount, orgTokAmount: !orgTokAmount ? tokAmount : orgTokAmount, orgWeiAmount: !orgWeiAmount ? weiAmount : orgWeiAmount, maker };
+              
+              // for orders with the same hash, add the previously stored wei, tok amount, and original block number
+              if (_openSells[orderHash]) {
+                weiAmount = _openSells[orderHash].weiAmount.plus(weiAmount);
+                tokAmount = _openSells[orderHash].tokAmount.plus(tokAmount);
+              }
+              var order = { type: log.name, tokenAddress, price, weiPerTok, weiAmount, tokAmount, orgTokAmount: !orgTokAmount ? tokAmount : orgTokAmount, orgWeiAmount: !orgWeiAmount ? weiAmount : orgWeiAmount, maker, decimals: token.decimals, transactionHash: tx.transactionHash, blockNumber: parseInt(tx.blockNumber, 16) };
+
               _openSells[orderHash] = order;
             }
             if (log.name === "MakeBuyOrder") { //bid
-              var order = { type: log.name, tokenAddress, price, weiPerTok, weiAmount, tokAmount, orgTokAmount: !orgTokAmount ? tokAmount : orgTokAmount, orgWeiAmount: !orgWeiAmount ? weiAmount : orgWeiAmount, maker };
+              // for orders with the same hash, add the previously stored wei and tok amount
+              if (_openBuys[orderHash]) {
+                weiAmount = _openBuys[orderHash].weiAmount.plus(weiAmount);
+                tokAmount = _openBuys[orderHash].tokAmount.plus(tokAmount);
+              }
+              var order = { type: log.name, tokenAddress, price, weiPerTok, weiAmount, tokAmount, orgTokAmount: !orgTokAmount ? tokAmount : orgTokAmount, orgWeiAmount: !orgWeiAmount ? weiAmount : orgWeiAmount, maker, decimals: token.decimals, transactionHash: tx.transactionHash, blockNumber: parseInt(tx.blockNumber, 16) };
+
               _openBuys[orderHash] = order;
             }
             if (log.name === "ChangeSellOrder") { //ask
@@ -141,9 +154,9 @@ var getMarketData = (marketDataCallback) => {
             }
             if (log.name.startsWith("Take") && tx.blockNumber >= rangeBlock) {
               tokenData.last = price;
-              if (tokenData.high24hr === null || price.isGreaterThan(tokenData.high24hr))
+              if (tokenData.high24hr === null || price.gt(tokenData.high24hr))
                 tokenData.high24hr = price;
-              if (tokenData.low24hr === null || price.isLessThan(tokenData.low24hr))
+              if (tokenData.low24hr === null || price.lt(tokenData.low24hr))
                 tokenData.low24hr = price;
             }
             if (log.name === "TakeSellOrder") { //last price,volume,high24hr,low24hr
@@ -212,10 +225,10 @@ var clearEmptyOrders = (openOrders, marketData) => {
     }
     token = tokenMap[openOrder.tokenAddress];
     tokenData = marketData[openOrder.tokenAddress];
-    if (openOrder.type === "MakeSellOrder" && (tokenData.lowestAsk === null || tokenData.lowestAsk.isGreaterThan(openOrder.price))) {
+    if (openOrder.type === "MakeSellOrder" && (tokenData.lowestAsk === null || tokenData.lowestAsk.gt(openOrder.price))) {
       tokenData.lowestAsk = openOrder.price;
     }
-    if (openOrder.type === "MakeBuyOrder" && (tokenData.highestBid === null || tokenData.highestBid.isLessThan(openOrder.price))) {
+    if (openOrder.type === "MakeBuyOrder" && (tokenData.highestBid === null || tokenData.highestBid.lt(openOrder.price))) {
       tokenData.highestBid = openOrder.price;
     }
   }
@@ -246,7 +259,10 @@ var formatOrder = (orders) => {
         symbol: token.symbol,
         orgTokenAmount: openOrder.orgTokAmount.dividedBy(Math.pow(10, token.decimals)),
         orgEthAmount: openOrder.orgWeiAmount.dividedBy(Math.pow(10, 18)),
-        maker: openOrder.maker
+        maker: openOrder.maker,
+        decimals: openOrder.decimals,		
+        transactionHash: openOrder.transactionHash,		
+        blockNumber: openOrder.blockNumber
       }
     }
   }
